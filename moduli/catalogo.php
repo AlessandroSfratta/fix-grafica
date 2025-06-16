@@ -39,7 +39,7 @@ function fix_modulo_catalogo() {
                 <label>Eventuali immagini/foto di esempio:</label>
                 <div class="upload-group" id="upload-catalogo-__INDEX__">
                     <div class="upload-row">
-                        <input type="file" name="catalogo_upload___INDEX__[]" accept=".jpg,.jpeg,.png,.webp,.pdf">
+                        <input type="file" class="fix-upload-input" name="catalogo_upload___INDEX__[]" accept=".jpg,.jpeg,.png,.webp,.pdf">
                     </div>
                 </div>
                 <button type="button"
