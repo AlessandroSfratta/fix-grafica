@@ -537,7 +537,7 @@ url.searchParams.append('fix_grafica_data', query);
 
 
 
-    $('.fix-upload-btn').on('click', function(e) {
+    $(document).on('click', '.fix-upload-btn', function(e) {
 
         $(this).siblings('.fix-upload-input').trigger('click');
 
@@ -547,13 +547,13 @@ url.searchParams.append('fix_grafica_data', query);
 
 
 
-    $('.fix-upload-input').on('change', function () {
+    $(document).on('change', '.fix-upload-input', function () {
 
         const file = $(this).prop('files')[0];
 
         const fileName = file?.name || 'Nessun file selezionato';
 
-        const container = $(this).closest('.fix-option');
+        const container = $(this).closest('.fix-option, .upload-row');
 
 
 
@@ -592,11 +592,11 @@ url.searchParams.append('fix_grafica_data', query);
 // fix-grafica.js  (SOLO il blocco change)
 jQuery(document).ready(function($) {
 
-    $('.fix-upload-btn').on('click', function () {
+    $(document).on('click', '.fix-upload-btn', function () {
         $(this).siblings('.fix-upload-input').trigger('click');
     });
 
-    $('.fix-upload-input').on('change', function () {
+    $(document).on('change', '.fix-option[data-type="logo"] .fix-upload-input', function () {
 
   console.log('Cambio file rilevato');
 
