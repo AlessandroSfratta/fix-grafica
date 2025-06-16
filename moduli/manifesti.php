@@ -39,7 +39,7 @@ function fix_modulo_manifesto() {
                 <label>Eventuali immagini/foto di esempio:</label>
                 <div class="upload-group" id="upload-manifesto-__INDEX__">
                     <div class="upload-row">
-                        <input type="file" name="upload-manifesto-__INDEX__[]" accept=".jpg,.jpeg,.png,.webp,.pdf">
+                        <input type="file" class="fix-upload-input" name="upload-manifesto-__INDEX__[]" accept=".jpg,.jpeg,.png,.webp,.pdf">
                     </div>
                 </div>
                 <button type="button"

@@ -476,6 +476,8 @@ add_action('woocommerce_add_order_item_meta', function ($item_id, $values) {
 
 add_action( 'wp_ajax_fix_upload_logo',        'fix_upload_logo' );
 add_action( 'wp_ajax_nopriv_fix_upload_logo', 'fix_upload_logo' );
+add_action( 'wp_ajax_fix_upload_file',        'fix_upload_file' );
+add_action( 'wp_ajax_nopriv_fix_upload_file', 'fix_upload_file' );
 
 function fix_upload_logo() {
 
@@ -509,6 +511,33 @@ function fix_upload_logo() {
         'url' => wp_get_attachment_url( $attach_id ),
     ] );
 
+}
+
+function fix_upload_file() {
+    check_ajax_referer( 'fix_upload_nonce', 'nonce' );
+
+    if ( empty( $_FILES['upload_file'] ) ) {
+        error_log( 'File non ricevuto' );
+    }
+
+    add_filter( 'upload_dir', 'fix_custom_upload_dir' );
+
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    require_once ABSPATH . 'wp-admin/includes/media.php';
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+
+    $attach_id = media_handle_upload( 'upload_file', 0 );
+
+    remove_filter( 'upload_dir', 'fix_custom_upload_dir' );
+
+    if ( is_wp_error( $attach_id ) ) {
+        wp_send_json_error( $attach_id->get_error_message() );
+    }
+
+    wp_send_json_success( [
+        'id'  => $attach_id,
+        'url' => wp_get_attachment_url( $attach_id ),
+    ] );
 }
 
 function fix_custom_upload_dir( $dirs ) {

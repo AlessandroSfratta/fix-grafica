@@ -43,7 +43,7 @@ function fix_modulo_rollup() {
                 <label>Eventuali immagini/foto di esempio:</label>
                 <div class="upload-group" id="upload-rollup-__INDEX__">
                     <div class="upload-row">
-                        <input type="file" name="rollup_upload___INDEX__[]" accept=".jpg,.jpeg,.png,.webp,.pdf">
+                        <input type="file" class="fix-upload-input" name="rollup_upload___INDEX__[]" accept=".jpg,.jpeg,.png,.webp,.pdf">
                     </div>
                 </div>
                 <button type="button"
