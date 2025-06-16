@@ -546,84 +546,82 @@ url.searchParams.append('fix_grafica_data', query);
 
 
 
-    $(document).on('change', '.fix-upload-input', function () {
+$(document).on('change', '.fix-upload-input', function () {
+  
+    const $input = $(this);
+    const fileInput = this;
+    const file = fileInput.files[0];
+    if (!file) return;
 
-        const fileInput = $(this)[0];
-        const file = fileInput.files[0];
-        if (!file) return;
+    const container = $input.closest('.fix-option, .upload-row');
+    const isLogo = $input.closest('.fix-option[data-type="logo"]').length > 0;
+    const originalName = $input.attr('name') || '';
 
-        const $input = $(this);
-        const container = $input.closest('.fix-option, .upload-row');
+    container.find('.fix-file-name, .fix-progress-bar').remove();
+    const progressBar = $('<div class="fix-progress-bar"><div class="fix-progress-fill"></div></div>');
+    container.append(progressBar);
 
-        const isLogo = $input.closest('.fix-option[data-type="logo"]').length > 0;
+    const formData = new FormData();
+    formData.append('action', isLogo ? 'fix_upload_logo' : 'fix_upload_file');
+    formData.append('nonce', fix_upload.nonce);
+    formData.append('upload_file', file);
 
-        const originalName = $input.attr('name') || '';
-
-        container.find('.fix-file-name, .fix-progress-bar').remove();
-        const progressBar = $('<div class="fix-progress-bar"><div class="fix-progress-fill"></div></div>');
-        container.append(progressBar);
-
-        const formData = new FormData();
-        formData.append('action', isLogo ? 'fix_upload_logo' : 'fix_upload_file');
-        formData.append('nonce', fix_upload.nonce);
-        formData.append('upload_file', file);
-
-        $.ajax({
-            url: fix_upload.ajax_url,
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            xhr: function() {
-                const xhr = $.ajaxSettings.xhr();
-                if (xhr.upload) {
-                    xhr.upload.addEventListener('progress', function(e) {
-                        if (e.lengthComputable) {
-                            const pct = (e.loaded / e.total) * 100;
-                            progressBar.find('.fix-progress-fill').css('width', pct + '%');
-                        }
-                    });
-                }
-                return xhr;
-            },
-            success: function (response) {
-                if (response.success) {
-                    const fileUrl = response.data.url;
-                    const relativePath = fileUrl.split('/uploads/')[1];
-
-                    if (isLogo) {
-                        $('#fix-logo-preview').html('<img src="' + fileUrl + '" />').show();
-                        $('input[name="upload_logo"]').remove();
-                        $('<input>').attr({
-                            type: 'hidden',
-                            name: 'upload_logo',
-                            value: relativePath
-                        }).appendTo('#fix-grafica-form');
-                    } else {
-                        const hidden = $('<input>').attr({
-                            type: 'hidden',
-                            name: originalName,
-                            value: relativePath
-                        });
-                        $input.siblings('input[type="hidden"][name="' + originalName.replace(/\[/g, '\\[').replace(/\]/g, '\\]') + '"]').remove();
-                        $input.after(hidden);
+    $.ajax({
+        url: fix_upload.ajax_url,
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        xhr: function() {
+            const xhr = $.ajaxSettings.xhr();
+            if (xhr.upload) {
+                xhr.upload.addEventListener('progress', function(e) {
+                    if (e.lengthComputable) {
+                        const pct = (e.loaded / e.total) * 100;
+                        progressBar.find('.fix-progress-fill').css('width', pct + '%');
                     }
-
-                    progressBar.find('.fix-progress-fill').css('width', '100%');
-                    container.append('<div class="fix-file-name">Hai caricato: ' + file.name + '</div>');
-                    if (originalName) {
-                        $input.attr('name', '');
-                    }
-                } else {
-                    alert('Errore: ' + response.data);
-                }
-            },
-            error: function () {
-                alert('Errore upload');
+                });
             }
-        });
+            return xhr;
+        },
+        success: function (response) {
+            if (response.success) {
+                const fileUrl = response.data.url;
+                const relativePath = fileUrl.split('/uploads/')[1];
 
+                if (isLogo) {
+                    $('#fix-logo-preview').html('<img src="' + fileUrl + '" />').show();
+                    $('input[name="upload_logo"]').remove();
+                    $('<input>').attr({
+                        type: 'hidden',
+                        name: 'upload_logo',
+                        value: relativePath
+                    }).appendTo('#fix-grafica-form');
+                } else {
+                    const hidden = $('<input>').attr({
+                        type: 'hidden',
+                        name: originalName,
+                        value: relativePath
+                    });
+                    $input.siblings('input[type="hidden"][name="' + originalName.replace(/\[/g, '\\[').replace(/\]/g, '\\]') + '"]').remove();
+                    $input.after(hidden);
+                }
+
+                progressBar.find('.fix-progress-fill').css('width', '100%');
+                container.append('<div class="fix-file-name">Hai caricato: ' + file.name + '</div>');
+                if (originalName) {
+                    $input.attr('name', '');
+                }
+            } else {
+                alert('Errore: ' + response.data);
+            }
+        },
+        error: function () {
+            alert('Errore upload');
+        }
     });
+});
+
 
 $('.canale-checkbox').on('change', function () {
 
