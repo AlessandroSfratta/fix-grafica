@@ -485,15 +485,14 @@ $('.modulo-form:visible').each(function () {
         if (name && value) {
             datiGrafica[name] = value;
         }
-
-        const uploadedLogoUrl = $('input[name="fix_grafica_data[upload_logo]"]').val();
-        if (uploadedLogoUrl) {
-            datiGrafica['upload_logo'] = uploadedLogoUrl;
-        }
-
-
     });
 });
+
+// Aggiunge l'URL del logo caricato via AJAX
+const uploadedLogoUrl = $('input[name="upload_logo"]').val();
+if (uploadedLogoUrl) {
+    datiGrafica['upload_logo'] = uploadedLogoUrl;
+}
 datiGrafica['prezzo_personalizzato'] = (totale * 1.22).toFixed(2);
 // Converte in query string
 const query = new URLSearchParams(datiGrafica).toString();
