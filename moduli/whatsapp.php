@@ -43,7 +43,7 @@ function fix_modulo_whatsapp() {
                 <label>Eventuali immagini/foto di esempio:</label>
                 <div class="upload-group" id="upload-whatsapp-__INDEX__">
                     <div class="upload-row">
-                        <input type="file" name="whatsapp_upload___INDEX__[]" accept=".jpg,.jpeg,.png,.webp,.pdf">
+                        <input type="file" class="fix-upload-input" name="whatsapp_upload___INDEX__[]" accept=".jpg,.jpeg,.png,.webp,.pdf">
                     </div>
                 </div>
                 <button type="button"
